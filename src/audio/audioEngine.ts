@@ -2,14 +2,15 @@ import * as Tone from 'tone'
 
 export type InstrumentId = 'Trumpet' | 'Harmonium' | 'Flute' | 'Violin'
 
-// Step 2: The Audio Mastering Chain
-// EQ (warm lows, sparkling highs) -> Compressor (glue & dynamics control) -> Spatial Reverb -> Master Destination
+// Step 2: High-Fidelity Audio Mastering Chain
+// EQ3 (subtle low warmth, airy sparkle)
 export const masterEQ = new Tone.EQ3({
-  low: 2,
-  mid: -1,
-  high: 3,
+  low: 1,
+  mid: 0,
+  high: 2,
 })
 
+// Studio Compressor (glue & transparent peak limiting)
 export const masterCompressor = new Tone.Compressor({
   threshold: -16,
   ratio: 3,
@@ -17,40 +18,48 @@ export const masterCompressor = new Tone.Compressor({
   release: 0.1,
 })
 
-export const masterReverb = new Tone.Reverb({
-  decay: 3.5,
-  wet: 0.25,
+// Feedback Delay (subtle rhythmic acoustic depth)
+export const masterDelay = new Tone.FeedbackDelay({
+  delayTime: '8n',
+  feedback: 0.2,
+  wet: 0.15,
 })
 
-// Complete mastering signal chain
-masterEQ.chain(masterCompressor, masterReverb, Tone.Destination)
+// Convolution/Algorithmic Spatial Reverb
+export const masterReverb = new Tone.Reverb({
+  decay: 4,
+  wet: 0.3,
+})
 
-// Persistent Samplers routed directly into the Master EQ
+// Complete mastering chain: EQ -> Compressor -> Delay -> Reverb -> Destination
+masterEQ.chain(masterCompressor, masterDelay, masterReverb, Tone.Destination)
+
+// High-fidelity multi-sample sets for chromatic acoustic authenticity
+const MULTI_SAMPLE_URLS = {
+  A3: 'A3.mp3',
+  C4: 'C4.mp3',
+  E4: 'E4.mp3',
+  G4: 'G4.mp3',
+  A4: 'A4.mp3',
+  C5: 'C5.mp3',
+  E5: 'E5.mp3',
+  G5: 'G5.mp3',
+  A5: 'A5.mp3',
+}
+
 export const samplers: Record<InstrumentId, Tone.Sampler> = {
   Trumpet: new Tone.Sampler({
-    urls: {
-      A3: 'A3.mp3',
-      A4: 'A4.mp3',
-      A5: 'A5.mp3',
-    },
+    urls: MULTI_SAMPLE_URLS,
     baseUrl: '/sounds/trumpet/',
   }).connect(masterEQ),
 
   Flute: new Tone.Sampler({
-    urls: {
-      A4: 'A4.mp3',
-      A5: 'A5.mp3',
-      A6: 'A6.mp3',
-    },
+    urls: MULTI_SAMPLE_URLS,
     baseUrl: '/sounds/flute/',
   }).connect(masterEQ),
 
   Violin: new Tone.Sampler({
-    urls: {
-      A3: 'A3.mp3',
-      A4: 'A4.mp3',
-      A5: 'A5.mp3',
-    },
+    urls: MULTI_SAMPLE_URLS,
     baseUrl: '/sounds/violin/',
   }).connect(masterEQ),
 
@@ -91,7 +100,7 @@ export const stopNote = (instrument: string, note: string) => {
 }
 
 /**
- * Maps 0-100 percentage to a decibel scale (-60 dB to 0 dB) for master output.
+ * Maps 0-100 percentage linearly to a decibel scale (-60 dB to 0 dB) for master output.
  * If muted or at 0%, sets Tone.Destination.mute = true.
  */
 export const setMasterVolume = (volumePercentage: number, isMuted: boolean) => {
@@ -102,7 +111,6 @@ export const setMasterVolume = (volumePercentage: number, isMuted: boolean) => {
 
   Tone.Destination.mute = false
 
-  // Map 0 -> -60 dB, 100 -> 0 dB linearly
   const minDb = -60
   const maxDb = 0
   const calculatedDb = minDb + (volumePercentage / 100) * (maxDb - minDb)
@@ -111,7 +119,7 @@ export const setMasterVolume = (volumePercentage: number, isMuted: boolean) => {
 }
 
 /**
- * Unlock AudioContext, generate impulse response for spatial reverb, and verify all samplers
+ * Unlock AudioContext, compute reverb impulse, and ensure all multi-samples are buffered.
  */
 export const initAudioEngine = async (): Promise<void> => {
   await Tone.start()

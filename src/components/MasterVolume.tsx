@@ -18,7 +18,6 @@ export const MasterVolume = ({ initialVolume = 80, onVolumeChange }: MasterVolum
     if (isMuted && val > 0) {
       setIsMuted(false)
     }
-    // Wire directly to Tone.js Audio Engine
     applyMasterVolume(val, nextMute)
     onVolumeChange?.(val, nextMute)
   }
@@ -26,7 +25,6 @@ export const MasterVolume = ({ initialVolume = 80, onVolumeChange }: MasterVolum
   const toggleMute = () => {
     const nextMute = !isMuted
     setIsMuted(nextMute)
-    // Wire directly to Tone.js Audio Engine
     applyMasterVolume(volume, nextMute)
     onVolumeChange?.(volume, nextMute)
   }
@@ -39,24 +37,24 @@ export const MasterVolume = ({ initialVolume = 80, onVolumeChange }: MasterVolum
   const effectiveLevel = isMuted ? 0 : volume
 
   return (
-    <div className="flex flex-col gap-1.5 min-w-[210px]">
+    <div className="flex flex-col gap-1.5 min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-[10px] font-mono tracking-widest text-amber-500/70 uppercase">Master Out</span>
-        <span className="text-[10px] font-mono text-amber-400 font-semibold tracking-tight">{calculatedDb}</span>
+        <span className="text-[10px] font-mono tracking-widest text-stone-400 uppercase font-medium">Master Output</span>
+        <span className="text-[10px] font-mono text-stone-600 font-medium tracking-tight">{calculatedDb}</span>
       </div>
 
-      <div className="flex items-center gap-3 px-3 py-2 rounded-2xl bg-[#141210]/90 border border-amber-900/30 shadow-[inset_0_2px_4px_rgba(0,0,0,0.7),0_8px_20px_rgba(0,0,0,0.4)] backdrop-blur-xl">
+      <div className="flex items-center gap-3 px-3 py-2 rounded-2xl bg-white border border-stone-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md">
         <button
           onClick={toggleMute}
           title={isMuted ? 'Unmute' : 'Mute'}
           type="button"
           className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
             isMuted
-              ? 'bg-orange-950/40 text-orange-400 border-orange-800/40 shadow-[0_0_12px_rgba(234,88,12,0.3)]'
-              : 'bg-stone-900/80 text-amber-200/80 border-amber-900/30 hover:text-amber-100 hover:bg-stone-800/90'
+              ? 'bg-stone-200 text-stone-800 border-stone-300 shadow-sm'
+              : 'bg-stone-100 text-stone-600 border-stone-200/70 hover:text-stone-900 hover:bg-stone-200/60'
           }`}
         >
-          {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+          {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
         </button>
 
         <div className="flex-1 flex flex-col gap-1">
@@ -66,25 +64,22 @@ export const MasterVolume = ({ initialVolume = 80, onVolumeChange }: MasterVolum
             max="100"
             value={isMuted ? 0 : volume}
             onChange={handleSliderChange}
-            className="w-full h-1.5 bg-stone-900 rounded-lg appearance-none cursor-pointer accent-amber-500 focus:outline-none"
+            className="w-full h-1.5 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-[#2c2c2c] focus:outline-none"
             style={{
-              background: `linear-gradient(to right, #b45309 0%, #f59e0b ${effectiveLevel}%, #262320 ${effectiveLevel}%, #262320 100%)`,
+              background: `linear-gradient(to right, #44403c 0%, #292524 ${effectiveLevel}%, #e7e5e4 ${effectiveLevel}%, #e7e5e4 100%)`,
             }}
           />
 
-          {/* Warm Amber / Gold Stereo VU Meter */}
+          {/* Clean minimal stereo VU meter */}
           <div className="flex items-center justify-between gap-0.5 h-1">
             {Array.from({ length: 16 }).map((_, idx) => {
               const threshold = (idx / 16) * 100
               const isActive = effectiveLevel >= threshold
               const isPeak = idx >= 13
-              const isMid = idx >= 9 && idx < 13
 
-              let color = 'bg-stone-900'
+              let color = 'bg-stone-200'
               if (isActive) {
-                if (isPeak) color = 'bg-orange-500 shadow-[0_0_6px_rgba(249,115,22,0.7)]'
-                else if (isMid) color = 'bg-amber-400 shadow-[0_0_5px_rgba(251,191,36,0.5)]'
-                else color = 'bg-amber-600/80 shadow-[0_0_3px_rgba(217,119,6,0.4)]'
+                color = isPeak ? 'bg-[#b87a41]' : 'bg-stone-600'
               }
 
               return <div key={idx} className={`flex-1 h-full rounded-[0.5px] transition-colors duration-100 ${color}`} />
@@ -92,7 +87,7 @@ export const MasterVolume = ({ initialVolume = 80, onVolumeChange }: MasterVolum
           </div>
         </div>
 
-        <div className="text-[11px] font-mono text-amber-200/60 w-7 text-right">{effectiveLevel}%</div>
+        <div className="text-[11px] font-mono text-stone-500 w-7 text-right">{effectiveLevel}%</div>
       </div>
     </div>
   )
