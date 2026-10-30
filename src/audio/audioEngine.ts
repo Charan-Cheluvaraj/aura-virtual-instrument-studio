@@ -47,38 +47,54 @@ const MULTI_SAMPLE_URLS = {
   A5: 'A5.mp3',
 }
 
+// Envelope configuration: fast instant trigger without clicking, smooth sustain, and lingering release
+const samplerEnvelopeConfig = {
+  attack: 0.005, // Fast, instant trigger with zero clicking
+  release: 1.8, // Let the sound ring out slightly longer after key release
+  envelope: {
+    attack: 0.005, // Fast, instant trigger with zero clicking
+    decay: 3.0,
+    sustain: 0.85, // Holds note volume smoothly during longer press
+    release: 1.8, // Let the sound ring out slightly longer after key release
+  },
+}
+
 export const samplers: Record<InstrumentId, Tone.Sampler> = {
   Trumpet: new Tone.Sampler({
     urls: MULTI_SAMPLE_URLS,
     baseUrl: '/sounds/trumpet/',
-  }).connect(masterEQ),
+    ...samplerEnvelopeConfig,
+  } as any).connect(masterEQ),
 
   Flute: new Tone.Sampler({
     urls: MULTI_SAMPLE_URLS,
     baseUrl: '/sounds/flute/',
-  }).connect(masterEQ),
+    ...samplerEnvelopeConfig,
+  } as any).connect(masterEQ),
 
   Violin: new Tone.Sampler({
     urls: MULTI_SAMPLE_URLS,
     baseUrl: '/sounds/violin/',
-  }).connect(masterEQ),
+    ...samplerEnvelopeConfig,
+  } as any).connect(masterEQ),
 
   Harmonium: new Tone.Sampler({
     urls: {
       G2: 'G2.wav',
     },
     baseUrl: '/sounds/harmonium/',
-  }).connect(masterEQ),
+    ...samplerEnvelopeConfig,
+  } as any).connect(masterEQ),
 }
 
 /**
- * Trigger attack for an instrument note
+ * Trigger attack for an instrument note with immediate scheduling (zero perceived latency)
  */
 export const playNote = (instrument: string, note: string) => {
   const sampler = samplers[instrument as InstrumentId]
   if (sampler && sampler.loaded) {
     try {
-      sampler.triggerAttack(note)
+      sampler.triggerAttack(note, Tone.now())
     } catch (err) {
       console.warn(`[AudioEngine] Error triggering ${instrument} ${note}:`, err)
     }
@@ -86,13 +102,13 @@ export const playNote = (instrument: string, note: string) => {
 }
 
 /**
- * Trigger release for an instrument note
+ * Trigger release for an instrument note with smooth release envelope
  */
 export const stopNote = (instrument: string, note: string) => {
   const sampler = samplers[instrument as InstrumentId]
   if (sampler && sampler.loaded) {
     try {
-      sampler.triggerRelease(note)
+      sampler.triggerRelease(note, Tone.now())
     } catch (err) {
       console.warn(`[AudioEngine] Error releasing ${instrument} ${note}:`, err)
     }

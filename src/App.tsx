@@ -4,7 +4,7 @@ import { InstrumentSelector, type InstrumentType } from './components/Instrument
 import { MasterVolume } from './components/MasterVolume'
 import { PianoKeyboard } from './components/PianoKeyboard'
 import { initAudioEngine, setMasterVolume } from './audio/audioEngine'
-import { Activity, Cpu, Sparkles, Volume2, Power, Loader2, Music, CheckCircle2, Waves, Sliders } from 'lucide-react'
+import { Activity, Sparkles, Power, Loader2, Music, CheckCircle2 } from 'lucide-react'
 
 export function App() {
   const [activeInstrument, setActiveInstrument] = useState<InstrumentType>('Violin')
@@ -117,65 +117,16 @@ export function App() {
       {/* Main Studio Workstation Console */}
       <main className="relative z-10 flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 flex flex-col gap-6 justify-center">
         
-        {/* Top Control Bar: Instrument Selector & Signal Chain Badges */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-3.5 rounded-2xl bg-white border border-stone-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.02)] backdrop-blur-md">
+        {/* Top Control Bar: Clean Instrument Selector */}
+        <div className="flex items-center justify-center sm:justify-start p-3.5 rounded-2xl bg-white border border-stone-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.02)] backdrop-blur-md">
           <InstrumentSelector 
             currentInstrument={activeInstrument} 
             onSelect={setActiveInstrument} 
           />
-
-          <div className="hidden sm:flex items-center gap-4 text-[10px] font-mono text-stone-500 pr-2">
-            <div className="flex items-center gap-1.5">
-              <Volume2 size={12} className="text-[#b87a41]" />
-              <span>ACTIVE: <strong className="text-stone-800 font-semibold">{activeInstrument.toUpperCase()}</strong></span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Sliders size={12} className="text-stone-500" />
-              <span>CHAIN: EQ3 • COMP • 8n DELAY</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Waves size={12} className="text-[#b87a41]" />
-              <span>REVERB: 4.0s / 30%</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Cpu size={12} className={isAudioReady ? 'text-[#b87a41]' : 'text-stone-400'} />
-              <span>{isAudioReady ? 'MULTI-SAMPLED' : 'UNLOADED'}</span>
-            </div>
-          </div>
         </div>
 
         {/* Centerpiece 2-Octave Grand Piano Keyboard */}
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between px-2 text-[11px] font-mono text-stone-500">
-            <span className="tracking-widest uppercase flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#b87a41]" />
-              PRIMARY KEYBED SURFACE [{activeInstrument.toUpperCase()}]
-            </span>
-            <span className="text-stone-400 font-mono">Pure Matte Ivory & Charcoal • 24 Keys</span>
-          </div>
-
-          <PianoKeyboard activeInstrument={activeInstrument} />
-        </div>
-
-        {/* Studio Guide & Keymap Overlay Panel */}
-        <section className="rounded-xl p-4 bg-white border border-stone-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-stone-600">
-          <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono">
-            <span className="text-stone-900 font-semibold flex items-center gap-1">⌨ KEYMAP:</span>
-            <span className="px-2 py-0.5 rounded bg-stone-100 border border-stone-200 text-stone-700">
-              Octave 3: [Z–M] / Acc: [Q, R, I, O, P]
-            </span>
-            <span className="px-2 py-0.5 rounded bg-stone-100 border border-stone-200 text-stone-700">
-              Octave 4: [A–J] / Acc: [W, E, T, Y, U]
-            </span>
-            <span className="px-2 py-0.5 rounded bg-stone-100 border border-stone-200 text-stone-800 font-medium">
-              Hotkeys: [1] Trumpet, [2] Harmonium, [3] Flute, [4] Violin
-            </span>
-          </div>
-
-          <div className="text-[11px] font-mono text-stone-500 tracking-wide text-right font-medium">
-            HIGH-FIDELITY FX CHAIN ACTIVE
-          </div>
-        </section>
+        <PianoKeyboard activeInstrument={activeInstrument} />
       </main>
 
       {/* Studio Footer Status Rail */}

@@ -129,26 +129,6 @@ export const PianoKeyboard = ({ activeInstrument = 'Violin' }: PianoKeyboardProp
       {/* Keyboard Case & Felt Bed in Minimalist Light Styling */}
       <div className="relative rounded-2xl p-4 sm:p-6 bg-white border border-stone-200/90 shadow-[0_12px_36px_rgba(0,0,0,0.04)] overflow-hidden">
         
-        {/* Header strip with soft markings and octave info */}
-        <div className="flex items-center justify-between pb-3 mb-2 border-b border-stone-200/80">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-stone-300" />
-            <span className="text-[11px] font-mono tracking-widest text-stone-500 uppercase font-medium">
-              Grand Keybed // 2 Full Octaves (C3–B4)
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="text-[10px] font-mono text-stone-500 px-2 py-0.5 rounded bg-stone-100 border border-stone-200/70">
-              14 NATURALS • 10 ACCIDENTALS
-            </span>
-            <span className="text-[10px] font-mono text-stone-700 px-2 py-0.5 rounded bg-stone-100 border border-stone-200/70 uppercase font-medium">
-              PRESET: {activeInstrument}
-            </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-stone-300" />
-          </div>
-        </div>
-
         {/* Vintage acoustic damper felt strip */}
         <div className="h-2 w-full rounded-t-sm bg-gradient-to-r from-[#6b1f1f] via-[#852828] to-[#6b1f1f] shadow-inner mb-0.5" />
 
@@ -272,17 +252,6 @@ export const PianoKeyboard = ({ activeInstrument = 'Violin' }: PianoKeyboardProp
               })}
             </div>
           </div>
-        </div>
-
-        {/* Bottom chassis lip */}
-        <div className="mt-3.5 flex items-center justify-between px-2 text-[10px] font-mono text-stone-400">
-          <span className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#b87a41]" />
-            HIGH-FIDELITY MULTI-SAMPLER // {activeInstrument.toUpperCase()}
-          </span>
-          <span className="tracking-wide text-stone-500 font-medium">
-            CHROMATIC SAMPLING & MASTERING CHAIN
-          </span>
         </div>
       </div>
     </div>
