@@ -70,7 +70,7 @@ export function App() {
       <header className="relative z-10 w-full border-b border-stone-200/80 bg-white/80 backdrop-blur-md shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4">
           
-          {/* Studio Brand: Clean Calligraphic Aura Logo */}
+          {/* Studio Brand: Clean Calligraphic Melodify Logo */}
           <div className="flex items-center gap-3.5">
             <div className="relative flex items-center justify-center w-10 h-10 rounded-2xl bg-stone-100 border border-stone-200/90 shadow-xs">
               <Sparkles size={17} className="text-[#b87a41]" />
@@ -83,8 +83,8 @@ export function App() {
 
             <div className="flex flex-col">
               <div className="flex items-baseline gap-2.5">
-                <span className="font-calligraphy text-4xl text-[#b87a41] font-normal tracking-normal lowercase leading-none select-none">
-                  Aura
+                <span className="font-calligraphy text-4xl text-[#b87a41] font-normal tracking-normal leading-none select-none">
+                  Melodify
                 </span>
                 <span className={`text-[9px] font-mono font-medium px-1.5 py-0.5 rounded border leading-none ${
                   isAudioReady 
@@ -142,7 +142,7 @@ export function App() {
 
           <div className="flex items-center gap-4">
             <span className="text-stone-500">DELAY: 8n • REVERB: 4s</span>
-            <span className="font-calligraphy text-base lowercase tracking-normal text-[#b87a41]">Aura Studio</span>
+            <span className="font-calligraphy text-base tracking-normal text-[#b87a41]">Melodify Studio</span>
           </div>
         </div>
       </footer>
@@ -179,9 +179,9 @@ export function App() {
                 </div>
               </div>
 
-              {/* Calligraphy Aura Brand */}
-              <div className="font-calligraphy text-5xl text-[#b87a41] font-normal tracking-normal lowercase mb-1 select-none">
-                Aura
+              {/* Calligraphy Melodify Brand */}
+              <div className="font-calligraphy text-5xl text-[#b87a41] font-normal tracking-normal mb-1 select-none">
+                Melodify
               </div>
 
               <h2 className="text-lg font-bold tracking-tight text-stone-900 mb-1.5 font-sans">
